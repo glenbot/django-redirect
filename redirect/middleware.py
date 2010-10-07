@@ -1,0 +1,21 @@
+from django.core.urlresolvers import resolve
+
+
+class RedirectMiddleware(object):
+    """
+        Process the redirect patterns from redirects.dynamic_urls.
+    """
+    def process_response(self, request, response):
+        if response.status_code != 404:
+            # No need to check for a redirect for non-404 responses.
+            return response
+
+        path = request.get_full_path()
+        try:
+            urlconf = 'redirects.dynamic_urls'
+            redirect, args, kwargs = resolve(path, urlconf=urlconf)
+            args = [value for value in kwargs.values()]
+            return redirect(request, *args)
+        except:
+            # No redirect was found. Return the response.
+            return response

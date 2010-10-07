@@ -1,0 +1,14 @@
+# Ignore setup files
+*.egg
+build
+dist
+django_redirect.egg-info
+
+# Ignore all dotfiles...
+.*
+
+# Ignore all pyc file
+*.pyc
+
+# except for .gitignore
+!.gitignore
