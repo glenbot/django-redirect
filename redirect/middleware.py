@@ -12,7 +12,7 @@ class RedirectMiddleware(object):
 
         path = request.get_full_path()
         try:
-            urlconf = 'redirects.dynamic_urls'
+            urlconf = 'redirect.dynamic_urls'
             redirect, args, kwargs = resolve(path, urlconf=urlconf)
             args = [value for value in kwargs.values()]
             return redirect(request, *args)
