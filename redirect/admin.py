@@ -4,7 +4,7 @@ import dynamic_urls
 
 
 class RedirectAdmin(admin.ModelAdmin):
-    list_display = ['from_url','to_url','status']
+    list_display = ['id', 'from_url', 'to_url', 'status']
 
 
     def save_model(self, request, object, form, change):

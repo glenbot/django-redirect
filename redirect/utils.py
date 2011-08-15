@@ -29,17 +29,18 @@ def get_redirect_patterns():
     redirects = Redirect.objects.filter(**db_filters)
     for redirect in redirects:
         extra = {}
-        pattern = r'^%s/?$' % redirect.from_url
-        if 'http' in redirect.to_url:
+        pattern = r'^%s$' % redirect.from_url
+
+        if redirect.to_url.startswith('http'):
             extra.update({'url': '%s' % redirect.to_url})
-        elif 'https' in redirect.to_url:
-            extra.update({'url': '%s' % redirect.to_url})
+
         else:
-            extra.update({'url': '/%s' % redirect.to_url})
+            extra.update({'url': '%s' % redirect.to_url})
 
         if redirect.http_status == 302:
             extra.update({'permanent': False})
             url_list.append(url(pattern, 'redirect_to', extra))
+
         else:
             url_list.append(url(pattern, 'redirect_to', extra))
 
