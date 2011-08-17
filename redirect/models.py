@@ -8,19 +8,21 @@ HTTP_STATUS_CHOICES = (
 )
 
 STATUS_CHOICES = (
-    (1, 'Active'),
-    (0, 'Inactive'),
+    (True, 'Active'),
+    (False, 'Inactive'),
 )
 
-uses_regex_helptext = _('Check if the From URL uses a regular expression. ' + \
-                        'If so, it will be moved to the top the URL ' + \
+uses_regex_helptext = _('Check if the From URL uses a regular expression. '
+                        'If so, it will be moved to the top the URL '
                         'patterns and processed first')
 
-from_url_helptext = _('Absolute path, excluding the domain. ' + \
-                      'Example: \'/about/\')')
+from_url_helptext = _('Absolute path, excluding the domain. '
+                      'Example: \'/about/\')'
+                      )
 
-to_url_helptext = _('Absolute path or full domain. Example: ' + \
-                    'http://www.example.com')
+to_url_helptext = _('Absolute path or full domain. Example: '
+                    'http://www.example.com'
+                    )
 
 
 class Redirect(models.Model):
@@ -36,7 +38,7 @@ class Redirect(models.Model):
                                            choices=HTTP_STATUS_CHOICES,
                                            default=301)
 
-    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1)
+    status = models.BooleanField(choices=STATUS_CHOICES, default=True)
 
     uses_regex = models.BooleanField(_('Uses Regular Expression'),
                                      default=False,
@@ -53,3 +55,16 @@ class Redirect(models.Model):
 
     def __unicode__(self):
         return "Redirect: %s --> %s" % (self.from_url, self.to_url)
+
+    def save(self, *args, **kwargs):
+        # strip slashes from beggining, add slashes to the end
+        # only if not a regex
+        if not self.uses_regex:
+            self.from_url = self.from_url.lstrip('/')
+            try:
+                if self.from_url[-1] != '/':
+                    self.from_url += '/'
+            except IndexError:
+                pass
+
+        super(Redirect, self).save(args, kwargs)

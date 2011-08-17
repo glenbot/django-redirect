@@ -11,6 +11,7 @@ class RedirectMiddleware(object):
             return response
 
         path = request.get_full_path()
+
         try:
             urlconf = 'redirect.dynamic_urls'
             redirect, args, kwargs = resolve(path, urlconf=urlconf)
