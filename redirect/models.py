@@ -67,7 +67,7 @@ class Redirect(models.Model):
             except IndexError:
                 pass
 
-        if self.from_url = '':
+        if self.from_url == '':
             # user wants to catch '/'
             self.from_url = '^$'
             self.uses_regex = True
