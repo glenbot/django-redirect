@@ -15,8 +15,7 @@ class RedirectMiddleware(object):
         try:
             urlconf = 'redirect.dynamic_urls'
             redirect, args, kwargs = resolve(path, urlconf=urlconf)
-            args = [value for value in kwargs.values()]
-            return redirect(request, *args)
+            return redirect(request, **kwargs)
         except:
             # No redirect was found. Return the response.
             return response

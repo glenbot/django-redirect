@@ -3,13 +3,13 @@ from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 
 HTTP_STATUS_CHOICES = (
-    (301, '301 - Permanent Redirect'),
-    (302, '302 - Temporary Redirect'),
+    (301, _('301 - Permanent Redirect')),
+    (302, _('302 - Temporary Redirect')),
 )
 
 STATUS_CHOICES = (
-    (True, 'Active'),
-    (False, 'Inactive'),
+    (True, _('Active')),
+    (False, _('Inactive')),
 )
 
 uses_regex_helptext = _('Check if the From URL uses a regular expression. '
@@ -17,7 +17,7 @@ uses_regex_helptext = _('Check if the From URL uses a regular expression. '
                         'patterns and processed first')
 
 from_url_helptext = _('Absolute path, excluding the domain. '
-                      'Example: \'/about/\')'
+                      'Example: \'/about/\''
                       )
 
 to_url_helptext = _('Absolute path or full domain. Example: '
@@ -54,7 +54,7 @@ class Redirect(models.Model):
         ordering = ('-uses_regex',)
 
     def __unicode__(self):
-        return "Redirect: %s --> %s" % (self.from_url, self.to_url)
+        return _("Redirect: %(from)s --> %(to)s") % {'from': self.from_url, 'to': self.to_url}
 
     def save(self, *args, **kwargs):
         # strip slashes from beggining, add slashes to the end

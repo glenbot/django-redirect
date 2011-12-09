@@ -31,21 +31,16 @@ def get_redirect_patterns():
         extra = {}
         pattern = r'^%s$' % redirect.from_url
 
-        if redirect.to_url.startswith('http'):
-            extra.update({'url': '%s' % redirect.to_url})
-
-        else:
-            extra.update({'url': '%s' % redirect.to_url})
+        extra.update({'url': '%s' % redirect.to_url})
 
         if redirect.http_status == 302:
             extra.update({'permanent': False})
             url_list.append(url(pattern, 'redirect_to', extra))
-
         else:
             url_list.append(url(pattern, 'redirect_to', extra))
 
     arg_groups = list(group_aruments(url_list))
     for args in arg_groups:
-        url_patterns += patterns('django.views.generic.simple', *args)
+        url_patterns += patterns('redirect.views', *args)
 
     return url_patterns
