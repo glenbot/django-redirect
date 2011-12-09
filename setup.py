@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
+from setuptools import setup
 import os
 
 setup(
@@ -13,8 +13,7 @@ setup(
     description = "A slightly more robust version of the native django redirect.",
     author = 'Glen Zangirolami',
     author_email = 'glenbot@gmail.com',
-    packages = find_packages(),
-    namespace_packages = ['redirect'],
+    packages = ['redirect'],
     include_package_data = True,
     zip_safe = False,
     classifiers = [
