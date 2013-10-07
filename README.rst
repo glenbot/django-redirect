@@ -22,10 +22,10 @@ Installation
       'redirect.middleware.RedirectMiddleware'
   )
 
-License
--------
+License: MIT
+------------
 
-.. _MIT: http://www.opensource.org/licenses/mit-license.php
+`_MIT License <http://www.opensource.org/licenses/mit-license.php>`_.
 
 Copyright (c) 2011 Glen Zangirolami
 
