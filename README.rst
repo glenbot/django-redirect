@@ -25,7 +25,7 @@ Installation
 License
 -------
 
-.. _MIT License: http://www.opensource.org/licenses/mit-license.php
+.. _MIT: http://www.opensource.org/licenses/mit-license.php
 
 Copyright (c) 2011 Glen Zangirolami
 
