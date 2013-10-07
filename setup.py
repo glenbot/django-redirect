@@ -1,27 +1,95 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""
+===============
+django-redirect
+===============
 
-from setuptools import setup
+A slightly more robust version of the native django redirect
+
+::
+
+    pip install django-redirect
+
+"""
 import os
+from distutils.core import setup
+
+__version__ = "0.1"
+
+
+def fullsplit(path, result=None):
+    """
+    Split a pathname into components (the opposite of os.path.join)
+    in a platform-neutral way.
+    """
+    if result is None:
+        result = []
+    head, tail = os.path.split(path)
+    if head == '':
+        return [tail] + result
+    if head == path:
+        return result
+    return fullsplit(head, [tail] + result)
+
+
+EXCLUDE_FROM_PACKAGES = []
+
+
+def is_package(package_name):
+    for pkg in EXCLUDE_FROM_PACKAGES:
+        if package_name.startswith(pkg):
+            return False
+    return True
+
+
+# Compile the list of packages available, because distutils doesn't have
+# an easy way to do this.
+packages, package_data = [], {}
+
+
+root_dir = os.path.dirname(__file__)
+if root_dir != '':
+    os.chdir(root_dir)
+django_dir = 'redirect'
+
+# This and the code above was taken from https://github.com/django/django/blob/master/setup.py
+for dirpath, dirnames, filenames in os.walk(django_dir):
+    # Ignore PEP 3147 cache dirs and those whose names start with '.'
+    dirnames[:] = [d for d in dirnames if not d.startswith('.') and d != '__pycache__']
+    parts = fullsplit(dirpath)
+    package_name = '.'.join(parts)
+    if '__init__.py' in filenames and is_package(package_name):
+        packages.append(package_name)
+    elif filenames:
+        relative_path = []
+        while '.'.join(parts) not in packages:
+            relative_path.append(parts.pop())
+        relative_path.reverse()
+        path = os.path.join(*relative_path)
+        package_files = package_data.setdefault('.'.join(parts), [])
+        package_files.extend([os.path.join(path, f) for f in filenames])
+
 
 setup(
-    name = "django-redirect",
-    version = "0.1",
-    url = 'http://github.com/glenbot/django-redirect',
-    download_url = 'http://github.com/glenbot/django-redirect/tarball/master',
-    license = 'GPL',
-    description = "A slightly more robust version of the native django redirect.",
     author = 'Glen Zangirolami',
     author_email = 'glenbot@gmail.com',
-    packages = ['redirect'],
-    include_package_data = True,
-    zip_safe = False,
+    maintainer = 'Glen Zangirolami',
+    maintainer_email = 'glenbot@gmail.com',
+    description = 'A slightly more robust version of the native django redirect',
+    long_description = __doc__,
+    fullname = 'django-redirect',
+    name = 'django-redirect',
+    url = 'https://github.com/glenbot/django-redirect',
+    download_url = 'https://github.com/glenbot/django-redirect',
+    version = __version__,
+    platforms = ['Linux'],
+    packages = packages,
+    package_data = package_data,
     classifiers = [
-        'Development Status :: 3 - Alpha',
-        'Framework :: Django',
+        'Development Status :: 4 - Beta',
+        'Environment :: Other Environment',
         'Intended Audience :: Developers',
-        'License :: GPL License',
-        'Operating System :: OS Independent',
+        'Operating System :: Unix',
         'Programming Language :: Python',
+        'License :: OSI Approved :: MIT License'
     ]
 )
