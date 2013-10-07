@@ -1,4 +1,6 @@
 .idea
+MANIFEST
+
 # Ignore setup files
 *.egg
 build
