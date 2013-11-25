@@ -1,4 +1,8 @@
-from django.conf.urls.defaults import url, patterns
+try:
+    from django.conf.urls import url, patterns
+except ImportError:
+    from django.conf.urls.default import url, patterns
+
 from django.conf import settings
 from models import Redirect
 
